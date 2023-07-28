@@ -2,6 +2,10 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Container } from "react-bootstrap"
 import { NewUsers } from "./components/NewUsers"
+import { useLocalStorage } from "./components/UseLocalStorage"
+import { useMemo } from "react";
+import { v4 as uuidV4 } from "uuid"
+import { UsersLayout } from "./components/UsersLayout"
 
 
 export type User = {
@@ -22,11 +26,18 @@ export type availInterests = {
   label: string
 }
 
+export type RawUser = {
+  id: string
+} & RawUserData
 
-
-
-
-
+export type RawUserData = {
+  name: string
+  lastName: string
+  email: string
+  jobRole: string
+  interestsId: string[]
+  markdown: string
+}
 
 
 
@@ -36,7 +47,32 @@ export type availInterests = {
 
 
 function App() {
+  const [users, setUsers] = useLocalStorage<RawUser>("USERS", [])
+  const [interests, setInterests] = useLocalStorage<availInterests[]>("INTERESTS", [])
 
+
+  const usersWithInterests = useMemo(() => {
+    return users.map(user => {
+      return { ...user, tags: interests.filter(tag => user.interestsId.includes(tag.id)) }
+    })
+  }, [users, interests])
+
+  function onCreateUser({ interests, ...data}: UserData) {
+    setUsers(prevUsers => {
+      return [
+        ...prevUsers,
+        {
+          ...data, id: uuidV4(), interestsId: interests.map(tag => tag.id)
+        },
+      ]
+    })
+  }
+
+  function addInterest(interest: availInterests) {
+    setInterests(prev => [...prev, interest])
+  }
+
+  
 
 
 
@@ -51,10 +87,14 @@ function App() {
     <Container className="my-4">
       <Routes>
         <Route path="/" element={<h1>Home</h1>} />
-        <Route path="/new" element={<NewUsers/>} />
+        <Route path="/new" element={<NewUsers
+        onSubmit={onCreateUser}
+        onAddTag={addInterest}
+        availInterests={interests}
+        />} />
 
-        <Route path="/:id">
-          <Route index element={<h1>show</h1>} />
+        <Route path="/:id" element={<UsersLayout users={usersWithInterests}/>}>
+          <Route index element={<User/>} />
           <Route path="edit" element={<h1>Edit</h1>} />
         </Route>
 

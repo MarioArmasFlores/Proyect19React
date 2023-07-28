@@ -1,19 +1,24 @@
 import { Form, Stack, Row, Col, Button } from "react-bootstrap"
 import CreateReactSelect from "react-select/creatable"
-import { useRef, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { availInterests } from "../App"
 import { Link, useNavigate } from "react-router-dom"
 import { v4 as uuidV4 } from "uuid"
+import { UserData } from "../App"
 
 
 type UsersFormProps = {
+    onSubmit:(data: UserData) => void
+    onAddTag: (tag: availInterests) => void
     availableInterest: availInterests[]
-}
+} & Partial<UserData>
 
 
 
 
 export function NewUsersForm({
+    onSubmit,
+    onAddTag,
     availableInterest,
     name = "",
     lastName = "",
@@ -21,7 +26,6 @@ export function NewUsersForm({
     jobRole = "",
     email = "",
     interests = [],
-    onAddTag,
 }: UsersFormProps) {
 
 
@@ -33,15 +37,31 @@ export function NewUsersForm({
     const lastNameRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
     const jobRoleRef = useRef<HTMLInputElement>(null)
-    const markdownRef = useRef<HTMLInputElement>(null)
+    const markdownRef = useRef<HTMLTextAreaElement>(null)
     const [selectedInterest, setSelectedInterest] = useState<availInterests[]>(interests)
     const navigate = useNavigate()
+
+
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+
+        onSubmit({
+            name: nameRef.current!.value,
+            markdown: markdownRef.current!.value,
+            lastName: lastNameRef.current!.value,
+            jobRole: jobRoleRef.current!.value,
+            email: emailRef.current!.value,
+            interests: selectedInterest,
+        })
+
+        navigate("..")
+    }
 
 
 
     return (
         <>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Stack gap={4}>
                     <Row>
                         <Col>
@@ -103,7 +123,7 @@ export function NewUsersForm({
                     <Row>
                         <Form.Group controlId="markdown">
                             <Form.Label>About you</Form.Label>
-                            <Form.Control ref={markdownRef} required as="textarea" defaultValue={markdown} rows={15} />
+                            <Form.Control ref={markdownRef} defaultValue={markdown} required as="textarea" rows={15} />
                         </Form.Group>
 
                     </Row>
