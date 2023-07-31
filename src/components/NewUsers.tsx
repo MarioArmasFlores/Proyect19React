@@ -18,7 +18,7 @@ export function NewUsers({ onSubmit, onAddTag, availInterests}: NewUsersProps) {
                 <NewUsersForm
                 onSubmit={onSubmit}
                 onAddTag={onAddTag}
-                availInterests={availInterests}
+                availableInterest={availInterests}
                 />
             </>
     )

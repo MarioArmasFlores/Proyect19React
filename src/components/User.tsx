@@ -28,7 +28,7 @@ export function User() {
             <Col>
                 <Stack>
                     <Link to={`/${user.id}/edit`}>
-                    <Button></Button>
+                    <Button>Edit</Button>
                     </Link>
                     <Button>Delete</Button>
                     <Link to = "/">
@@ -38,7 +38,7 @@ export function User() {
                 </Stack>
             </Col>
         </Row>
-        <ReactMarkdown></ReactMarkdown>
+        <ReactMarkdown>{user.markdown}</ReactMarkdown>
     </>
 
 }

@@ -6,6 +6,9 @@ import { useLocalStorage } from "./components/UseLocalStorage"
 import { useMemo } from "react";
 import { v4 as uuidV4 } from "uuid"
 import { UsersLayout } from "./components/UsersLayout"
+import { User } from "./components/User"
+import { UserList } from "./components/UserList"
+import { EditUsers } from "./components/EditUsers"
 
 
 export type User = {
@@ -18,7 +21,7 @@ export type UserData = {
   email: string // ! - email son leidos en typescript como strings?
   markdown: string
   jobRole: string
-  interests: availInterests[] 
+  interests: availInterests[]
 }
 
 export type availInterests = {
@@ -57,7 +60,7 @@ function App() {
     })
   }, [users, interests])
 
-  function onCreateUser({ interests, ...data}: UserData) {
+  function onCreateUser({ interests, ...data }: UserData) {
     setUsers(prevUsers => {
       return [
         ...prevUsers,
@@ -71,8 +74,23 @@ function App() {
   function addInterest(interest: availInterests) {
     setInterests(prev => [...prev, interest])
   }
+  function onUpdateUser(id: string, { interests, ...data }: 
+    UserData) {
+      setUsers(prevUsers => {
+        return prevUsers.map(user => {
+          if (user.id === id) {
+            return {
+              ...user, ...data, interestsId: interests.map((tag) =>
+              tag.id)
+            }
+          }else {
+            return user
+          }
+        })
+      })
+    }
 
-  
+
 
 
 
@@ -86,16 +104,18 @@ function App() {
   return (
     <Container className="my-4">
       <Routes>
-        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/" element={<UserList users={usersWithInterests} availInterests={interests} />} />
         <Route path="/new" element={<NewUsers
-        onSubmit={onCreateUser}
-        onAddTag={addInterest}
-        availInterests={interests}
+          onSubmit={onCreateUser}
+          onAddTag={addInterest}
+          availInterests={interests}
         />} />
 
-        <Route path="/:id" element={<UsersLayout users={usersWithInterests}/>}>
-          <Route index element={<User/>} />
-          <Route path="edit" element={<h1>Edit</h1>} />
+        <Route path="/:id" element={<UsersLayout users={usersWithInterests} />}>
+          <Route index element={<User />} />
+          <Route path="edit" element={<EditUsers onSubmit={onUpdateUser}
+            onAddTag={addInterest}
+            interests={interests} />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

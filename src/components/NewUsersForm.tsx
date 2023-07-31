@@ -7,10 +7,12 @@ import { v4 as uuidV4 } from "uuid"
 import { UserData } from "../App"
 
 
+
+
 type UsersFormProps = {
     onSubmit:(data: UserData) => void
     onAddTag: (tag: availInterests) => void
-    availableInterest: availInterests[]
+    interest: availInterests[]
 } & Partial<UserData>
 
 
@@ -19,7 +21,7 @@ type UsersFormProps = {
 export function NewUsersForm({
     onSubmit,
     onAddTag,
-    availableInterest,
+    interest,
     name = "",
     lastName = "",
     markdown = "",
@@ -106,7 +108,7 @@ export function NewUsersForm({
                                 value={selectedInterest.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
-                                options={availableInterest.map((tag) => {
+                                options={interest.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
                                 onChange={tags => {
