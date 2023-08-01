@@ -5,6 +5,7 @@ import { UserData } from "../App";
 
 
 
+
 type EditUsersProps = {
     onSubmit: (id: string, data: UserData) => void
     onAddTag: (tag: availInterests) => void

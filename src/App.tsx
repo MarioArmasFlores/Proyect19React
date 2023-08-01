@@ -18,7 +18,7 @@ export type User = {
 export type UserData = {
   name: string
   lastName: string
-  email: string // ! - email son leidos en typescript como strings?
+  email: string // ! - email son leidos en typescript como strings? r: Si
   markdown: string
   jobRole: string
   interests: availInterests[]
@@ -31,7 +31,14 @@ export type availInterests = {
 
 export type RawUser = {
   id: string
-} & RawUserData
+  name: string
+  lastName: string
+  email: string
+  jobRole: string
+  interestsId: string[]
+  markdown: string
+  interests: availInterests[]
+}
 
 export type RawUserData = {
   name: string
@@ -50,15 +57,30 @@ export type RawUserData = {
 
 
 function App() {
-  const [users, setUsers] = useLocalStorage<RawUser>("USERS", [])
+  const [users, setUsers] = useLocalStorage<RawUser[]>("USERS", [])
   const [interests, setInterests] = useLocalStorage<availInterests[]>("INTERESTS", [])
 
 
   const usersWithInterests = useMemo(() => {
     return users.map(user => {
-      return { ...user, tags: interests.filter(tag => user.interestsId.includes(tag.id)) }
+      return {
+        ...user,
+        interests: interests.filter(tag => user.interestsId.includes(tag.id))
+      }
     })
   }, [users, interests])
+
+
+
+
+
+
+
+
+
+
+
+
 
   function onCreateUser({ interests, ...data }: UserData) {
     setUsers(prevUsers => {

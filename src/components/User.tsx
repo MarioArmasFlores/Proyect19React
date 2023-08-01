@@ -1,11 +1,9 @@
 import { useNavigate, Link } from "react-router-dom"
-import { UsersLayout, useUsers } from "./UsersLayout"
+import { useUsers } from "./UsersLayout"
 import { Row, Col, Stack, Badge, Button } from "react-bootstrap"
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
 
-type UserProps = {
-    
-}
+
 
 
 

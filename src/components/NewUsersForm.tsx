@@ -7,15 +7,11 @@ import { v4 as uuidV4 } from "uuid"
 import { UserData } from "../App"
 
 
-
-
 type UsersFormProps = {
     onSubmit:(data: UserData) => void
     onAddTag: (tag: availInterests) => void
     interest: availInterests[]
 } & Partial<UserData>
-
-
 
 
 export function NewUsersForm({
@@ -29,9 +25,6 @@ export function NewUsersForm({
     email = "",
     interests = [],
 }: UsersFormProps) {
-
-
-
 
 
 

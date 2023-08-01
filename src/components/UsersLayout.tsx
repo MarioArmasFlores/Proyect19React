@@ -4,12 +4,12 @@ import { User } from "../App";
 
 type UserLayoutProps = {
     users: User[]
-}
+} 
 
 
 
 
-export function UsersLayout({ users}: UserLayoutProps ) {
+export function UsersLayout({users}: UserLayoutProps ) {
 
     const { id } = useParams()
     const user = users.find(u => u.id === id)

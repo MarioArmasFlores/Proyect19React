@@ -5,28 +5,27 @@ import ReactSelect from "react-select"
 import { availInterests } from "../App"
 
 type SimplifiedUser = {
-    interests: availInterests[]
     name: string
     lastName: string
     id: string
     jobRole: string
     email: string
+    Interests: availInterests[]
 
-}
+} 
 
 type UserListProps = {
-    availInterests: availInterests[]
     users: SimplifiedUser[]
-
-}
-
-
+    interests: availInterests[]
+} 
 
 
 
 
 
-export function UserList({availInterests, users}: UserListProps) {
+
+
+export function UserList({ interests, users }: UserListProps) {
 
     const [selectedInterest, setSelectedInterest] = useState<availInterests[]>([]);
     const [name, setName] = useState("");
@@ -35,12 +34,12 @@ export function UserList({availInterests, users}: UserListProps) {
     const [email, setEmail] = useState("")
 
     const filteredUsers = useMemo(() => {
-        return users. filter((user) => {
-            return (name === "" || user.name.toLowerCase().includes(name.toLowerCase())) && (selectedInterest?.length === 0 ||
-               selectedInterest?.every(tag => user.interests.some(userTag => userTag.id === tag.id)) )
+        return users.filter((user) => {
+            return (name === "" || user.name.toLowerCase().includes(name.toLowerCase())) && (selectedInterest.length === 0 ||
+                selectedInterest.every(tag => user.Interests.some(userTag => userTag.id === tag.id)))
         })
-    }, [name, selectedInterest, users ])
-    
+    }, [name, selectedInterest, users])
+
 
 
 
@@ -67,7 +66,7 @@ export function UserList({availInterests, users}: UserListProps) {
 
                             <Form.Group controlId="name">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control  type="text" value={name} onChange={e => setName(e.target.value)} />
+                                <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} />
                             </Form.Group>
 
                         </Col>
@@ -85,7 +84,7 @@ export function UserList({availInterests, users}: UserListProps) {
                     <Row>
                         <Form.Group controlId="emailAddress">
                             <Form.Label>Email Address</Form.Label>
-                            <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)}  />
+                            <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} />
                         </Form.Group>
 
                         <Form.Group controlId="JobRole">
@@ -99,7 +98,7 @@ export function UserList({availInterests, users}: UserListProps) {
                                 value={selectedInterest.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
-                                options={availInterests.map((tag) => {
+                                options={interests.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
                                 onChange={tags => {
@@ -115,7 +114,7 @@ export function UserList({availInterests, users}: UserListProps) {
             <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
                 {filteredUsers.map(user => (
                     <Col key={user.id}>
-                        <UserCard id={user.id} name={user.name} lastName={user.lastName} interests={user.interests} email={user.email} jobRole={user.jobRole}/>
+                        <UserCard id={user.id} name={user.name} lastName={user.lastName} Interests={user.Interests} email={user.email} jobRole={user.jobRole} />
                     </Col>
                 ))}
 
@@ -125,24 +124,24 @@ export function UserList({availInterests, users}: UserListProps) {
     )
 }
 
-function UserCard({id, name, lastName, interests, email, jobRole }: SimplifiedUser) {
+function UserCard({ id, name, lastName, Interests, email, jobRole }: SimplifiedUser) {
     return (
-            <Card as={Link} to={`${id}`}>
-                <Card.Body>
-                    <Stack gap={2} className="align-items-center justify-content-center h-100">
-                        <span>{`${name} ${lastName}`}</span>
-                        <span>{`${email} ${jobRole}`}</span>
-                        {interests.length > 0 && (
-                            <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
-                                {interests.map(tag => (
-                                    <Badge className="text-truncate" key={tag.id}> {tag.label}</Badge>
-                                ))}
-                            </Stack>
-                        )}
-                    </Stack>
-                </Card.Body>
+        <Card as={Link} to={`${id}`}>
+            <Card.Body>
+                <Stack gap={2} className="align-items-center justify-content-center h-100">
+                    <span>{`${name} ${lastName}`}</span>
+                    <span>{`${email} ${jobRole}`}</span>
+                    {Interests.length > 0 && (
+                        <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
+                            {Interests.map(tag => (
+                                <Badge className="text-truncate" key={tag.id}> {tag.label}</Badge>
+                            ))}
+                        </Stack>
+                    )}
+                </Stack>
+            </Card.Body>
 
 
-            </Card>
+        </Card>
     )
 }
