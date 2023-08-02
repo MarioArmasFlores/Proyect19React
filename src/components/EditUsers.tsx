@@ -26,7 +26,7 @@ export function EditUsers({ onSubmit, onAddTag, interests }: EditUsersProps) {
             <NewUsersForm
                 name={user.name}
                 lastName={user.lastName}
-                interests={interests}
+                interest={interests}
                 markdown={user.markdown}
                 onAddTag={onAddTag}
                 onSubmit={data => onSubmit(user.id, data)}

@@ -37,8 +37,8 @@ export type RawUser = {
   jobRole: string
   interestsId: string[]
   markdown: string
-  interests: availInterests[]
-}
+  Interests: availInterests[]
+} 
 
 export type RawUserData = {
   name: string
@@ -47,7 +47,7 @@ export type RawUserData = {
   jobRole: string
   interestsId: string[]
   markdown: string
-}
+} 
 
 
 
@@ -126,7 +126,7 @@ function App() {
   return (
     <Container className="my-4">
       <Routes>
-        <Route path="/" element={<UserList users={usersWithInterests} availInterests={interests} />} />
+        <Route path="/" element={<UserList users={usersWithInterests} interests={interests} />} />
         <Route path="/new" element={<NewUsers
           onSubmit={onCreateUser}
           onAddTag={addInterest}
