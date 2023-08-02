@@ -31,14 +31,8 @@ export type availInterests = {
 
 export type RawUser = {
   id: string
-  name: string
-  lastName: string
-  email: string
-  jobRole: string
-  interestsId: string[]
-  markdown: string
-  interests: availInterests[]
-}
+
+} & RawUserData
 
 export type RawUserData = {
   name: string
@@ -47,12 +41,8 @@ export type RawUserData = {
   jobRole: string
   interestsId: string[]
   markdown: string
+
 }
-
-
-
-
-
 
 
 
@@ -72,16 +62,6 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-
   function onCreateUser({ interests, ...data }: UserData) {
     setUsers(prevUsers => {
       return [
@@ -93,24 +73,36 @@ function App() {
     })
   }
 
+  function onUpdateUser(id: string, { interests, ...data }:
+    UserData) {
+    setUsers(prevUsers => {
+      return prevUsers.map(user => {
+        if (user.id === id) {
+          return {
+            ...user, ...data, interestsId: interests.map((tag) =>
+              tag.id)
+          }
+        } else {
+          return user
+        }
+      })
+    })
+  }
+
+
+  function onDeleteUser(id: string) {
+    setUsers(prevUsers => {
+      return prevUsers.filter(user => user.id !== id)
+    })
+  }
+
+
   function addInterest(interest: availInterests) {
     setInterests(prev => [...prev, interest])
   }
-  function onUpdateUser(id: string, { interests, ...data }: 
-    UserData) {
-      setUsers(prevUsers => {
-        return prevUsers.map(user => {
-          if (user.id === id) {
-            return {
-              ...user, ...data, interestsId: interests.map((tag) =>
-              tag.id)
-            }
-          }else {
-            return user
-          }
-        })
-      })
-    }
+
+
+
 
 
 
@@ -126,7 +118,11 @@ function App() {
   return (
     <Container className="my-4">
       <Routes>
-        <Route path="/" element={<UserList users={usersWithInterests} availInterests={interests} />} />
+        <Route path="/" element={<UserList users={usersWithInterests}
+          availInterests={interests} />} />
+
+
+
         <Route path="/new" element={<NewUsers
           onSubmit={onCreateUser}
           onAddTag={addInterest}
@@ -134,7 +130,7 @@ function App() {
         />} />
 
         <Route path="/:id" element={<UsersLayout users={usersWithInterests} />}>
-          <Route index element={<User />} />
+          <Route index element={<User onDeleteUser={onDeleteUser} />} />
           <Route path="edit" element={<EditUsers onSubmit={onUpdateUser}
             onAddTag={addInterest}
             interests={interests} />} />

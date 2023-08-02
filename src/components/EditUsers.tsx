@@ -31,8 +31,8 @@ export function EditUsers({ onSubmit, onAddTag, interests }: EditUsersProps) {
                 onAddTag={onAddTag}
                 onSubmit={data => onSubmit(user.id, data)}
                 jobRole={user.jobRole}
-                email={user.email}
-
+                email={user.email} 
+                availInterest={[]}
             />
         </>
     )

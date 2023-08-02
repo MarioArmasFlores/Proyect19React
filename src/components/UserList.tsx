@@ -10,13 +10,13 @@ type SimplifiedUser = {
     id: string
     jobRole: string
     email: string
-    Interests: availInterests[]
+    interests: availInterests[]
 
 } 
 
 type UserListProps = {
     users: SimplifiedUser[]
-    interests: availInterests[]
+    availInterests: availInterests[]
 } 
 
 
@@ -25,7 +25,7 @@ type UserListProps = {
 
 
 
-export function UserList({ interests, users }: UserListProps) {
+export function UserList({ availInterests, users }: UserListProps) {
 
     const [selectedInterest, setSelectedInterest] = useState<availInterests[]>([]);
     const [name, setName] = useState("");
@@ -36,7 +36,7 @@ export function UserList({ interests, users }: UserListProps) {
     const filteredUsers = useMemo(() => {
         return users.filter((user) => {
             return (name === "" || user.name.toLowerCase().includes(name.toLowerCase())) && (selectedInterest.length === 0 ||
-                selectedInterest.every(tag => user.Interests.some(userTag => userTag.id === tag.id)))
+                selectedInterest.every(tag => user.interests.some(userTag => userTag.id === tag.id)))
         })
     }, [name, selectedInterest, users])
 
@@ -48,13 +48,13 @@ export function UserList({ interests, users }: UserListProps) {
     return (
         <>
             <Row className="align-items-center mb-4">
-                <Col><h1>Users</h1></Col>
+                <Col><h1>Filter Users</h1></Col>
                 <Col xs="auto">
                     <Stack gap={2} direction="horizontal">
                         <Link to="/new">
                             <Button variant="primary"> Create User </Button>
                         </Link>
-                        <Button>Edit Tags</Button>
+                       
                     </Stack>
                 </Col>
 
@@ -94,11 +94,11 @@ export function UserList({ interests, users }: UserListProps) {
 
                         <Form.Group controlId="interest">
                             <Form.Label>Interest</Form.Label>
-                            <ReactSelect
+                            <ReactSelect className="mb-3"
                                 value={selectedInterest.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
-                                options={interests.map((tag) => {
+                                options={availInterests.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
                                 onChange={tags => {
@@ -114,7 +114,7 @@ export function UserList({ interests, users }: UserListProps) {
             <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
                 {filteredUsers.map(user => (
                     <Col key={user.id}>
-                        <UserCard id={user.id} name={user.name} lastName={user.lastName} Interests={user.Interests} email={user.email} jobRole={user.jobRole} />
+                        <UserCard id={user.id} name={user.name} lastName={user.lastName} interests={user.interests} email={user.email} jobRole={user.jobRole} />
                     </Col>
                 ))}
 
@@ -124,16 +124,17 @@ export function UserList({ interests, users }: UserListProps) {
     )
 }
 
-function UserCard({ id, name, lastName, Interests, email, jobRole }: SimplifiedUser) {
+function UserCard({ id, name, lastName, interests}: SimplifiedUser) {
     return (
         <Card as={Link} to={`${id}`}>
             <Card.Body>
                 <Stack gap={2} className="align-items-center justify-content-center h-100">
-                    <span>{`${name} ${lastName}`}</span>
-                    <span>{`${email} ${jobRole}`}</span>
-                    {Interests.length > 0 && (
+                    <img src="" alt="" />
+                    <h3 className="">{`${name} ${lastName}`}</h3>
+                    
+                    {interests.length > 0 && (
                         <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
-                            {Interests.map(tag => (
+                            {interests.map(tag => (
                                 <Badge className="text-truncate" key={tag.id}> {tag.label}</Badge>
                             ))}
                         </Stack>

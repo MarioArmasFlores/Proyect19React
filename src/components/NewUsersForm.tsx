@@ -8,26 +8,29 @@ import { UserData } from "../App"
 
 
 type UsersFormProps = {
-    onSubmit:(data: UserData) => void
+    onSubmit: (data: UserData) => void
     onAddTag: (tag: availInterests) => void
-    interest: availInterests[]
+    availInterest: availInterests[]
 } & Partial<UserData>
 
 
 export function NewUsersForm({
     onSubmit,
     onAddTag,
-    interest,
+    availInterest,
     name = "",
     lastName = "",
     markdown = "",
     jobRole = "",
     email = "",
+    image = "",
     interests = [],
+
+
 }: UsersFormProps) {
 
 
-
+    const imageRef = useRef<HTMLInputElement>(null)
     const nameRef = useRef<HTMLInputElement>(null)
     const lastNameRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
@@ -35,6 +38,7 @@ export function NewUsersForm({
     const markdownRef = useRef<HTMLTextAreaElement>(null)
     const [selectedInterest, setSelectedInterest] = useState<availInterests[]>(interests)
     const navigate = useNavigate()
+
 
 
     function handleSubmit(e: FormEvent) {
@@ -59,6 +63,14 @@ export function NewUsersForm({
             <Form onSubmit={handleSubmit}>
                 <Stack gap={4}>
                     <Row>
+                        <Col>
+                            <Form.Group controlId="image">
+                                <Form.Label>picture</Form.Label>
+                                <Form.Control ref={imageRef} defaultValue={image} type="file"></Form.Control>
+
+                            </Form.Group>
+
+                        </Col>
                         <Col>
 
                             <Form.Group controlId="name">
@@ -101,7 +113,7 @@ export function NewUsersForm({
                                 value={selectedInterest.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
-                                options={interest.map((tag) => {
+                                options={availInterest.map((tag) => {
                                     return { label: tag.label, value: tag.id }
                                 })}
                                 onChange={tags => {
@@ -122,7 +134,7 @@ export function NewUsersForm({
                         </Form.Group>
 
                     </Row>
-                    
+
                     <Stack direction='horizontal' gap={2} className='justify-content-end'>
                         <Button type="submit" variant="primary">Save</Button>
                         <Link to="..">
