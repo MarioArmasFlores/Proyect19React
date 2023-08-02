@@ -129,7 +129,7 @@ function UserCard({ id, name, lastName, interests}: SimplifiedUser) {
         <Card as={Link} to={`${id}`}>
             <Card.Body>
                 <Stack gap={2} className="align-items-center justify-content-center h-100">
-                    <img src="" alt="" />
+                    
                     <h3 className="">{`${name} ${lastName}`}</h3>
                     
                     {interests.length > 0 && (

@@ -11,6 +11,8 @@ type UsersFormProps = {
     onSubmit: (data: UserData) => void
     onAddTag: (tag: availInterests) => void
     availInterest: availInterests[]
+    image: File | null
+
 } & Partial<UserData>
 
 
@@ -23,14 +25,13 @@ export function NewUsersForm({
     markdown = "",
     jobRole = "",
     email = "",
-    image = "",
     interests = [],
 
 
 }: UsersFormProps) {
 
 
-    const imageRef = useRef<HTMLInputElement>(null)
+    
     const nameRef = useRef<HTMLInputElement>(null)
     const lastNameRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
@@ -57,20 +58,12 @@ export function NewUsersForm({
     }
 
 
-
     return (
         <>
             <Form onSubmit={handleSubmit}>
                 <Stack gap={4}>
                     <Row>
-                        <Col>
-                            <Form.Group controlId="image">
-                                <Form.Label>picture</Form.Label>
-                                <Form.Control ref={imageRef} defaultValue={image} type="file"></Form.Control>
-
-                            </Form.Group>
-
-                        </Col>
+                        
                         <Col>
 
                             <Form.Group controlId="name">
