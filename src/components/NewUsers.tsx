@@ -6,11 +6,11 @@ import { NewUsersForm } from "./NewUsersForm"
 type NewUsersProps = {
     onSubmit: (data: UserData) => void
     onAddTag: (tag: availInterests) => void
-    availableInterests: availInterests[] // ! estamos seguros de esto? // solucion: cambie el nombre a availInterests
+    availInterests: availInterests[] // ! estamos seguros de esto? // solucion: cambie el nombre a availInterests
     
 }
 
-export function NewUsers({ onSubmit, onAddTag, availableInterests}: NewUsersProps) {
+export function NewUsers({ onSubmit, onAddTag, availInterests}: NewUsersProps) {
 
     return (
             <>

@@ -22,6 +22,7 @@ export type UserData = {
   markdown: string
   jobRole: string
   interests: availInterests[]
+  pfpImage: File | null // *****
 }
 
 export type availInterests = {
@@ -100,19 +101,6 @@ function App() {
   function addInterest(interest: availInterests) {
     setInterests(prev => [...prev, interest])
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   return (

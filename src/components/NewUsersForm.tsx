@@ -1,23 +1,24 @@
 import { Form, Stack, Row, Col, Button } from "react-bootstrap"
 import CreateReactSelect from "react-select/creatable"
-import { FormEvent, useRef, useState } from "react"
+import { FormEvent, useRef, useState, useEffect } from "react"
 import { availInterests } from "../App"
 import { Link, useNavigate } from "react-router-dom"
 import { v4 as uuidV4 } from "uuid"
 import { UserData } from "../App"
-
+import image01 from "../assets/images/img01.jpg"
+import styles from "./NewUser.module.css"
 
 type UsersFormProps = {
     onSubmit: (data: UserData) => void
     onAddTag: (tag: availInterests) => void
     availInterest: availInterests[]
-    
+
 
 } & Partial<UserData>
 
 
 export function NewUsersForm({
-    
+
     onSubmit,
     onAddTag,
     availInterest,
@@ -27,12 +28,16 @@ export function NewUsersForm({
     jobRole = "",
     email = "",
     interests = [],
+    pfpImage // ******
 
 
 }: UsersFormProps) {
 
 
-    
+    const imgRef = useRef(null)
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+
     const nameRef = useRef<HTMLInputElement>(null)
     const lastNameRef = useRef<HTMLInputElement>(null)
     const emailRef = useRef<HTMLInputElement>(null)
@@ -53,20 +58,50 @@ export function NewUsersForm({
             jobRole: jobRoleRef.current!.value,
             email: emailRef.current!.value,
             interests: selectedInterest,
+            pfpImage: imgRef.current // *****
+            
         })
 
         navigate("..")
     }
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedImage(file);
+        }
+    };
+
+
+
+
+
+    // defaultValue ******
 
 
     return (
         <>
             <Form onSubmit={handleSubmit}>
                 <Stack gap={4}>
-                    <Row>
-                        
-                        <Col>
 
+                    <Row>
+                        <Col>
+                            <div>
+                                <img className={styles.imageSize} src={selectedImage ? URL.createObjectURL(selectedImage) : image01 } alt="" />
+                            </div>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Insertar Imagen</Form.Label>
+                                <Form.Control type="file" ref={imgRef} onChange={handleImageChange} defaultValue={pfpImage}></Form.Control>
+                            </Form.Group>
+                        </Col>
+
+
+
+                    </Row>
+                    <Row>
+                        <Col>
                             <Form.Group controlId="name">
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control ref={nameRef} type="text" required defaultValue={name} />
@@ -89,42 +124,48 @@ export function NewUsersForm({
                             <Form.Label>Email Address</Form.Label>
                             <Form.Control ref={emailRef} type="email" required defaultValue={email} />
                         </Form.Group>
+                    </Row>
 
-                        <Form.Group controlId="JobRole">
-                            <Form.Label>Job Role</Form.Label>
-                            <Form.Control ref={jobRoleRef} type="text" required defaultValue={jobRole} />
-                        </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="JobRole">
+                                <Form.Label>Job Role</Form.Label>
+                                <Form.Control ref={jobRoleRef} type="text" required defaultValue={jobRole} />
+                            </Form.Group>
 
-                        <Form.Group controlId="interest">
-                            <Form.Label>Interest</Form.Label>
-                            <CreateReactSelect
-                                onCreateOption={label => {
-                                    const newTag = { id: uuidV4(), label }
-                                    onAddTag(newTag)
-                                    setSelectedInterest(prev => [...prev, newTag])
+                        </Col>
 
-                                }}
-                                value={selectedInterest.map((tag) => {
-                                    return { label: tag.label, value: tag.id }
-                                })}
-                                options={availInterest.map((tag) => {
-                                    return { label: tag.label, value: tag.id }
-                                })}
-                                onChange={tags => {
-                                    setSelectedInterest(tags.map(tag => {
-                                        return { label: tag.label, id: tag.value }
-                                    }))
-                                }}
-                                isMulti />
-                        </Form.Group>
+                        <Col>
+                            <Form.Group controlId="interest">
+                                <Form.Label>Interest</Form.Label>
+                                <CreateReactSelect
+                                    onCreateOption={label => {
+                                        const newTag = { id: uuidV4(), label }
+                                        onAddTag(newTag)
+                                        setSelectedInterest(prev => [...prev, newTag])
 
+                                    }}
+                                    value={selectedInterest.map((tag) => {
+                                        return { label: tag.label, value: tag.id }
+                                    })}
+                                    options={availInterest.map((tag) => {
+                                        return { label: tag.label, value: tag.id }
+                                    })}
+                                    onChange={tags => {
+                                        setSelectedInterest(tags.map(tag => {
+                                            return { label: tag.label, id: tag.value }
+                                        }))
+                                    }}
+                                    isMulti />
+                            </Form.Group>
+                        </Col>
 
                     </Row>
 
                     <Row>
                         <Form.Group controlId="markdown">
                             <Form.Label>About you</Form.Label>
-                            <Form.Control ref={markdownRef} defaultValue={markdown} required as="textarea" rows={15} />
+                            <Form.Control ref={markdownRef} defaultValue={markdown} required as="textarea" rows={10} />
                         </Form.Group>
 
                     </Row>
