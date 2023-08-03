@@ -17,6 +17,7 @@ type UsersFormProps = {
 
 
 export function NewUsersForm({
+    
     onSubmit,
     onAddTag,
     availInterest,
