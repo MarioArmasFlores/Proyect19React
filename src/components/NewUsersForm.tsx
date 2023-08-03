@@ -11,7 +11,7 @@ type UsersFormProps = {
     onSubmit: (data: UserData) => void
     onAddTag: (tag: availInterests) => void
     availInterest: availInterests[]
-    image: File | null
+    
 
 } & Partial<UserData>
 
