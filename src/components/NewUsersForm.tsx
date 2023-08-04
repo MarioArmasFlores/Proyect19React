@@ -1,6 +1,6 @@
 import { Form, Stack, Row, Col, Button } from "react-bootstrap"
 import CreateReactSelect from "react-select/creatable"
-import { FormEvent, useRef, useState, useEffect } from "react"
+import { FormEvent, useRef, useState} from "react"
 import { availInterests } from "../App"
 import { Link, useNavigate } from "react-router-dom"
 import { v4 as uuidV4 } from "uuid"
@@ -12,6 +12,8 @@ type UsersFormProps = {
     onSubmit: (data: UserData) => void
     onAddTag: (tag: availInterests) => void
     availInterest: availInterests[]
+   
+    
 
 
 } & Partial<UserData>
@@ -28,15 +30,16 @@ export function NewUsersForm({
     jobRole = "",
     email = "",
     interests = [],
-    pfpImage // ******
+    pfpImage,
+    
 
 
 }: UsersFormProps) {
 
 
     const imgRef = useRef(null)
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
-
+    const [selectedImage, setSelectedImage] = useState<File | null>(pfpImage ?? null);
+    const [imageSrc, setImageSrc] = useState<string | undefined>(undefined)
 
     const nameRef = useRef<HTMLInputElement>(null)
     const lastNameRef = useRef<HTMLInputElement>(null)
@@ -58,7 +61,7 @@ export function NewUsersForm({
             jobRole: jobRoleRef.current!.value,
             email: emailRef.current!.value,
             interests: selectedInterest,
-            pfpImage: imgRef.current // *****
+            pfpImage: selectedImage                                                  // *****chatgpt
             
         })
 
@@ -69,16 +72,13 @@ export function NewUsersForm({
         const file = e.target.files?.[0];
         if (file) {
             setSelectedImage(file);
+            setImageSrc(URL.createObjectURL(file))
+            
+            
         }
+        console.log(pfpImage)
     };
-
-
-
-
-
     // defaultValue ******
-
-
     return (
         <>
             <Form onSubmit={handleSubmit}>
@@ -87,13 +87,13 @@ export function NewUsersForm({
                     <Row>
                         <Col>
                             <div>
-                                <img className={styles.imageSize} src={selectedImage ? URL.createObjectURL(selectedImage) : image01 } alt="" />
+                                <img className={styles.imageSize} src={imageSrc ?? image01} alt="" />
                             </div>
                         </Col>
                         <Col>
                             <Form.Group>
                                 <Form.Label>Insertar Imagen</Form.Label>
-                                <Form.Control type="file" ref={imgRef} onChange={handleImageChange} defaultValue={pfpImage}></Form.Control>
+                                <Form.Control type="file" accept="image/*" ref={imgRef} onChange={handleImageChange}></Form.Control>
                             </Form.Group>
                         </Col>
 
@@ -188,4 +188,3 @@ export function NewUsersForm({
 
 }
 
-// lo ultimo que hicimos fue terminar de crear las funciones de createReactsELECT

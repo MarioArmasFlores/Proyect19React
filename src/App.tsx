@@ -13,7 +13,9 @@ import { EditUsers } from "./components/EditUsers"
 
 export type User = {
   id: string
-} & UserData
+} & UserData & {
+  pfpImage: File | null; //** cambio chatgpt
+}
 
 export type UserData = {
   name: string
@@ -22,7 +24,7 @@ export type UserData = {
   markdown: string
   jobRole: string
   interests: availInterests[]
-  pfpImage: File | null // *****
+  pfpImage: File | null  // *****
 }
 
 export type availInterests = {
@@ -42,6 +44,7 @@ export type RawUserData = {
   jobRole: string
   interestsId: string[]
   markdown: string
+  pfpImage: File | null //👍
 
 }
 

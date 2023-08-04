@@ -3,6 +3,8 @@ import { Row, Col, Stack, Button, Form, Card, Badge } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import ReactSelect from "react-select"
 import { availInterests } from "../App"
+import Styles from "./NewUser.module.css"
+
 
 type SimplifiedUser = {
     name: string
@@ -11,13 +13,14 @@ type SimplifiedUser = {
     jobRole: string
     email: string
     interests: availInterests[]
+    pfpImage: File | null 
+}
 
-} 
 
 type UserListProps = {
     users: SimplifiedUser[]
     availInterests: availInterests[]
-} 
+}
 
 
 
@@ -54,7 +57,7 @@ export function UserList({ availInterests, users }: UserListProps) {
                         <Link to="/new">
                             <Button variant="primary"> Create User </Button>
                         </Link>
-                       
+
                     </Stack>
                 </Col>
 
@@ -114,8 +117,10 @@ export function UserList({ availInterests, users }: UserListProps) {
             <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
                 {filteredUsers.map(user => (
                     <Col key={user.id}>
-                        <UserCard id={user.id} name={user.name} lastName={user.lastName} interests={user.interests} email={user.email} jobRole={user.jobRole} />
+                        <UserCard id={user.id} name={user.name} lastName={user.lastName} interests={user.interests} email={user.email} jobRole={user.jobRole} pfpImage={user.pfpImage} />
                     </Col>
+
+                    /***....................................añadimos pfpImage arriba */
                 ))}
 
             </Row>
@@ -124,25 +129,27 @@ export function UserList({ availInterests, users }: UserListProps) {
     )
 }
 
-function UserCard({ id, name, lastName, interests}: SimplifiedUser) {
+function UserCard({ id, name, lastName, interests, pfpImage }: SimplifiedUser) {
+    //const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : undefined; // Aquí, pfpImage debe ser un Blob o un File
+    //const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : null;
+    const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : undefined;
+
     return (
-        <Card as={Link} to={`${id}`}>
-            <Card.Body>
-                <Stack gap={2} className="align-items-center justify-content-center h-100">
-                    
-                    <h3 className="">{`${name} ${lastName}`}</h3>
-                    
-                    {interests.length > 0 && (
-                        <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
-                            {interests.map(tag => (
-                                <Badge className="text-truncate" key={tag.id}> {tag.label}</Badge>
-                            ))}
-                        </Stack>
-                    )}
-                </Stack>
-            </Card.Body>
-
-
-        </Card>
-    )
-}
+      <Card as={Link} to={`${id}`}>
+        <Card.Body>
+          <Stack gap={2} className="align-items-center justify-content-center h-100">
+            <img className={Styles.imageSize} src={imageUrl} alt="" />
+            <h3 >{`${name} ${lastName}`}</h3>
+            {interests.length > 0 && (
+              <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
+                {interests.map(tag => (
+                  <Badge className="text-truncate" key={tag.id}> {tag.label}</Badge>
+                ))}
+              </Stack>
+            )}
+          </Stack>
+        </Card.Body>
+      </Card>
+    );
+  }
+  
