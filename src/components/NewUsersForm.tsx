@@ -13,8 +13,6 @@ type UsersFormProps = {
     onAddTag: (tag: availInterests) => void
     availInterest: availInterests[]
    
-    
-
 
 } & Partial<UserData>
 
@@ -30,7 +28,7 @@ export function NewUsersForm({
     jobRole = "",
     email = "",
     interests = [],
-    pfpImage,
+    pfpImage
     
 
 
@@ -38,8 +36,8 @@ export function NewUsersForm({
 
 
     const imgRef = useRef(null)
-    const [selectedImage, setSelectedImage] = useState<File | null>(pfpImage ?? null);
-    const [imageSrc, setImageSrc] = useState<string | undefined>(undefined)
+    const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined); // -------> (pfpImage ?? null)
+    //const [imageSrc, setImageSrc] = useState<string | undefined>(undefined)
 
     const nameRef = useRef<HTMLInputElement>(null)
     const lastNameRef = useRef<HTMLInputElement>(null)
@@ -61,22 +59,29 @@ export function NewUsersForm({
             jobRole: jobRoleRef.current!.value,
             email: emailRef.current!.value,
             interests: selectedInterest,
-            pfpImage: selectedImage                                                  // *****chatgpt
+            pfpImage: selectedImage     
+                   //****/            
+                                  // *****chatgpt
             
         })
-
+        
         navigate("..")
     }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setSelectedImage(file);
-            setImageSrc(URL.createObjectURL(file))
+            setSelectedImage(URL.createObjectURL(file));
+            //setImageSrc()
+            
+            
+
+            
             
             
         }
-        console.log(pfpImage)
+        
+        
     };
     // defaultValue ******
     return (
@@ -87,7 +92,7 @@ export function NewUsersForm({
                     <Row>
                         <Col>
                             <div>
-                                <img className={styles.imageSize} src={imageSrc ?? image01} alt="" />
+                                <img className={styles.imageSize} src={selectedImage ?? image01} alt="" />
                             </div>
                         </Col>
                         <Col>
@@ -96,9 +101,6 @@ export function NewUsersForm({
                                 <Form.Control type="file" accept="image/*" ref={imgRef} onChange={handleImageChange}></Form.Control>
                             </Form.Group>
                         </Col>
-
-
-
                     </Row>
                     <Row>
                         <Col>
@@ -176,12 +178,7 @@ export function NewUsersForm({
                             <Button type='button' variant='outline-secondar y'>Cancel</Button>
                         </Link>
                     </Stack>
-
-
-
                 </Stack>
-
-
             </Form>
         </>
     )

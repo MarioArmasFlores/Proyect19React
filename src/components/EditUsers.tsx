@@ -13,9 +13,6 @@ type EditUsersProps = {
 }
 
 
-
-
-
 export function EditUsers({ onSubmit, onAddTag, interests }: EditUsersProps) {
 
     const user = useUsers()

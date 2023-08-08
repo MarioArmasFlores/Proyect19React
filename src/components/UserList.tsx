@@ -13,7 +13,7 @@ type SimplifiedUser = {
     jobRole: string
     email: string
     interests: availInterests[]
-    pfpImage: File | null 
+    pfpImage: string | undefined 
 }
 
 
@@ -120,7 +120,9 @@ export function UserList({ availInterests, users }: UserListProps) {
                         <UserCard id={user.id} name={user.name} lastName={user.lastName} interests={user.interests} email={user.email} jobRole={user.jobRole} pfpImage={user.pfpImage} />
                     </Col>
 
-                    /***....................................añadimos pfpImage arriba */
+                    /***....................................añadimos pfpImage arriba:
+                     * pfpImage={user.pfpImage}
+                     */
                 ))}
 
             </Row>
@@ -129,16 +131,20 @@ export function UserList({ availInterests, users }: UserListProps) {
     )
 }
 
+/* , pfpImage ------ removed from UserCard({props})*/
+
+
+
 function UserCard({ id, name, lastName, interests, pfpImage }: SimplifiedUser) {
     //const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : undefined; // Aquí, pfpImage debe ser un Blob o un File
     //const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : null;
-    const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : undefined;
+    //const imageUrl = pfpImage ? URL.createObjectURL(pfpImage) : undefined;
 
     return (
       <Card as={Link} to={`${id}`}>
         <Card.Body>
           <Stack gap={2} className="align-items-center justify-content-center h-100">
-            <img className={Styles.imageSize} src={imageUrl} alt="" />
+            <img className={Styles.imageSize} src={pfpImage} alt="" />
             <h3 >{`${name} ${lastName}`}</h3>
             {interests.length > 0 && (
               <Stack gap={1} direction="horizontal" className="justify-content-center flex-wrap">
