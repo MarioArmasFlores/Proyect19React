@@ -30,6 +30,7 @@ export function EditUsers({ onSubmit, onAddTag, interests }: EditUsersProps) {
                 jobRole={user.jobRole}
                 email={user.email} 
                 availInterest={[]}
+                pfpImage={user.pfpImage}    /*** */
             />
         </>
     )

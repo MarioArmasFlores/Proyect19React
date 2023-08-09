@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useUsers } from "./UsersLayout"
 import { Row, Col, Stack, Badge, Button } from "react-bootstrap"
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
-
+import styles from "./NewUser.module.css"
 type UserProps = {
     onDeleteUser: (id: string) => void
 }
@@ -16,6 +16,7 @@ export function User({ onDeleteUser }: UserProps) {
     return <>
         <Row>
             <Col className="align-items-center mb-4">
+                <img className={styles.imageSize } src={user.pfpImage} alt="" />
                 <h1>{user.name}</h1>
                 {user.interests.length > 0 && (
                     <Stack gap={1} direction="horizontal" className="flex-wrap">
